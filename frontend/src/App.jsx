@@ -1,21 +1,31 @@
-import { useState, useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
 import UsuarioPage from './pages/UsuarioPage';
+import HabitForm from './components/HabitForm';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from "./components/contexts/AuthContext";
 
 function App() {
- 
-
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<UsuarioPage />} />
+    <AuthProvider>
 
-      </Routes>
-    </BrowserRouter>
-  )
+      <BrowserRouter>
+        <Routes>
+          {/* Rutas públicas */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+
+          {/* Rutas protegidas */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/new" element={<HabitForm />} />
+            <Route path="/" element={<UsuarioPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;
